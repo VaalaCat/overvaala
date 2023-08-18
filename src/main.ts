@@ -1,4 +1,5 @@
 import { ErrorMapper } from "utils/ErrorMapper";
+import { roleHarvester } from "role.harvester"
 
 declare global {
   /*
@@ -33,6 +34,9 @@ declare global {
 // This utility uses source maps to get the line numbers and file names of the original, TS source code
 export const loop = ErrorMapper.wrapLoop(() => {
   console.log(`Current game tick is ${Game.time}`);
+  for (const c in Game.creeps) {
+    roleHarvester.run(Game.creeps[c])
+  }
 
   // Automatically delete memory of missing creeps
   for (const name in Memory.creeps) {

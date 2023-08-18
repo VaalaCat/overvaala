@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "module": "esnext",
-    "lib": ["es2018"],
+    "lib": [
+      "es2018",
+      "DOM"
+    ],
     "target": "es2018",
     "moduleResolution": "Node",
     "outDir": "dist",
