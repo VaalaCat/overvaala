@@ -36,18 +36,22 @@ export const roleHarvesterTaskList: TaskNode = {
 }
 
 export const roleMiscerTaskList: TaskNode = {
-	name: taskRepair.name,
-	exec: taskRepair.run,
+	name: taskMourn.name,
+	exec: taskMourn.run,
 	next: {
 		name: taskCollect.name,
 		exec: taskCollect.run,
 		next: {
-			name: taskMourn.name,
-			exec: taskMourn.run,
+			name: taskRepair.name,
+			exec: taskRepair.run,
 			next: {
-				name: taskUpgrade.name,
-				exec: taskUpgrade.run,
-				next: null,
+				name: taskRepair.name,
+				exec: taskRepair.run,
+				next: {
+					name: taskUpgrade.name,
+					exec: taskUpgrade.run,
+					next: null,
+				},
 			},
 		},
 	},

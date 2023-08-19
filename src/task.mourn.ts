@@ -3,11 +3,14 @@ export const taskMourn = {
 	run: function (creep: Creep): boolean {
 
 		// find tombstone and collect its energy
-		const target = creep.pos.findClosestByPath(FIND_TOMBSTONES);
-		if (target) {
-			if (creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-				creep.moveTo(target, { visualizePathStyle: { stroke: '#ffaa00' } });
-			}
+		const target = creep.pos.findClosestByPath(FIND_TOMBSTONES, {
+			filter: (tombstone) => { return tombstone.store.getUsedCapacity(RESOURCE_ENERGY) > 0; }
+		});
+		if (!target || creep.store.getFreeCapacity() == 0) {
+			return false;
+		}
+		if (creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+			creep.moveTo(target, { visualizePathStyle: { stroke: '#ffaa00' } });
 			return true;
 		}
 

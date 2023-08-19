@@ -18,10 +18,10 @@ export const spawner = {
 		} else {
 			console.log('can Spawning new creep');
 		}
-		taskBuild.born(5);
+		taskBuild.born(2);
 		taskUpgrade.born(1);
 		taskHarvest.born(2);
-		bornCreepLimit(1, ROLE_MISCER);
+		bornCreepLimit(2, ROLE_MISCER);
 	}
 }
 
