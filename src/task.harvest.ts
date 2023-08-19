@@ -44,7 +44,7 @@ export const taskHarvest = {
 	born: function (creepLimit: number) {
 		let numOfUpgrader = Object.keys(Game.creeps)
 			.filter((name) => name.startsWith(ROLE_HAVESTER)).length;
-		if (numOfUpgrader <= creepLimit) {
+		if (numOfUpgrader < creepLimit) {
 			creepFather.born(Game.spawns['Spawn1'], ROLE_HAVESTER);
 		}
 	}
