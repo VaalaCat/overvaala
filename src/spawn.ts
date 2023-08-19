@@ -1,3 +1,4 @@
+import { ROLE_MISCER, creepFather } from "creepfather";
 import { taskBuild } from "task.build";
 import { taskHarvest } from "task.harvest";
 import { taskUpgrade } from "task.upgrade";
@@ -20,5 +21,14 @@ export const spawner = {
 		taskBuild.born(5);
 		taskUpgrade.born(1);
 		taskHarvest.born(2);
+		bornCreepLimit(1, ROLE_MISCER);
+	}
+}
+
+const bornCreepLimit = function (creepLimit: number, role: string) {
+	let numOfUpgrader = Object.keys(Game.creeps)
+		.filter((name) => name.startsWith(role)).length;
+	if (numOfUpgrader < creepLimit) {
+		creepFather.born(Game.spawns['Spawn1'], role);
 	}
 }

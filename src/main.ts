@@ -19,7 +19,7 @@ declare global {
   interface CreepMemory {
     role: string;
     room: string;
-    sourceIdx: number | undefined;
+    sourceIdx: number;
     working: boolean;
     building: boolean;
     upgrading: boolean;

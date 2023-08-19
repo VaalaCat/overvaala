@@ -15,7 +15,7 @@ export const taskBuild = {
 			return false;
 		}
 
-		let sourceIdx = creep.memory.sourceIdx || 0;
+		let sourceIdx = creep.memory.sourceIdx;
 
 		if (creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {
 			creep.memory.building = false;

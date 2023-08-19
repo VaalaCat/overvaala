@@ -16,6 +16,7 @@ export const taskHarvest = {
 		let targets = creep.room.find(FIND_STRUCTURES, {
 			filter: (structure) => {
 				return (structure.structureType == STRUCTURE_EXTENSION ||
+					structure.structureType == STRUCTURE_CONTAINER ||
 					structure.structureType == STRUCTURE_SPAWN ||
 					structure.structureType == STRUCTURE_TOWER) &&
 					structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
@@ -26,7 +27,7 @@ export const taskHarvest = {
 			return false;
 		}
 
-		let sourceIdx = creep.memory.sourceIdx || 1;
+		let sourceIdx = creep.memory.sourceIdx
 		if (creep.store.getFreeCapacity() > 0) {
 			var sources = creep.room.find(FIND_SOURCES);
 			if (creep.harvest(sources[sourceIdx]) == ERR_NOT_IN_RANGE) {

@@ -18,7 +18,7 @@ export const taskUpgrade = {
 			creep.memory.upgrading = true;
 			creep.say('⚡ upgrade');
 		}
-		let sourceIdx = creep.memory.sourceIdx || 1;
+		let sourceIdx = creep.memory.sourceIdx;
 
 		if (creep.memory.upgrading) {
 			if (creep.upgradeController(creep.room.controller as StructureController) == ERR_NOT_IN_RANGE) {
