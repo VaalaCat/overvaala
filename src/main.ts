@@ -1,5 +1,5 @@
 import { ErrorMapper } from "utils/ErrorMapper";
-import { roleHarvester } from "role.harvester"
+import { handler } from "handler";
 
 declare global {
   /*
@@ -20,6 +20,8 @@ declare global {
     role: string;
     room: string;
     working: boolean;
+    building: boolean;
+    upgrading: boolean;
   }
 
   // Syntax for adding proprties to `global` (ex "global.log")
@@ -34,9 +36,7 @@ declare global {
 // This utility uses source maps to get the line numbers and file names of the original, TS source code
 export const loop = ErrorMapper.wrapLoop(() => {
   console.log(`Current game tick is ${Game.time}`);
-  for (const c in Game.creeps) {
-    roleHarvester.run(Game.creeps[c])
-  }
+  handler();
 
   // Automatically delete memory of missing creeps
   for (const name in Memory.creeps) {
