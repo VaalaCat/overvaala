@@ -1,7 +1,7 @@
 import { ROLE_HAVESTER, creepFather } from "creepfather";
 
-export const roleHarvester = {
-	run: function (creep: Creep) {
+export const taskHarvest = {
+	run: function (creep: Creep, sourceIdx: number) {
 		if (creep.room.find(FIND_FLAGS).length > 0) {
 			let fs = creep.room.find(FIND_FLAGS);
 			let targetFlag = fs.filter((f) => f.name.startsWith(ROLE_HAVESTER))[0];
@@ -13,8 +13,8 @@ export const roleHarvester = {
 
 		if (creep.store.getFreeCapacity() > 0) {
 			var sources = creep.room.find(FIND_SOURCES);
-			if (creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
-				creep.moveTo(sources[1], { visualizePathStyle: { stroke: '#ffaa00' } });
+			if (creep.harvest(sources[sourceIdx]) == ERR_NOT_IN_RANGE) {
+				creep.moveTo(sources[sourceIdx], { visualizePathStyle: { stroke: '#ffaa00' } });
 			}
 		}
 		else {

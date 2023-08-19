@@ -1,6 +1,6 @@
 import { ROLE_BUILDER, creepFather } from "creepfather";
 
-export const roleBuilder = {
+export const taskBuild = {
 
 	run: function (creep: Creep, sourceIdx: number) {
 		if (creep.room.find(FIND_FLAGS).length > 0) {

@@ -1,7 +1,7 @@
 import { ROLE_UPGRADER, creepFather } from "creepfather";
 
-export const roleUpgrader = {
-	run: function (creep: Creep) {
+export const taskUpgrad = {
+	run: function (creep: Creep, sourceIdx: number) {
 		if (creep.room.find(FIND_FLAGS).length > 0) {
 			let fs = creep.room.find(FIND_FLAGS);
 			let targetFlag = fs.filter((f) => f.name.startsWith(ROLE_UPGRADER))[0];
@@ -25,8 +25,8 @@ export const roleUpgrader = {
 		}
 		else {
 			var sources = creep.room.find(FIND_SOURCES);
-			if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-				creep.moveTo(sources[0], { visualizePathStyle: { stroke: '#ffaa00' } });
+			if (creep.harvest(sources[sourceIdx]) == ERR_NOT_IN_RANGE) {
+				creep.moveTo(sources[sourceIdx], { visualizePathStyle: { stroke: '#ffaa00' } });
 			}
 		}
 	},

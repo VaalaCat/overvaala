@@ -1,6 +1,6 @@
-import { roleBuilder } from "role.builder";
-import { roleHarvester } from "role.harvester";
-import { roleUpgrader } from "role.upgrader";
+import { taskBuild } from "task.build";
+import { taskHarvest } from "task.harvest";
+import { taskUpgrad } from "task.upgrad";
 
 export const spawner = {
 	run: (name: string) => {
@@ -17,8 +17,8 @@ export const spawner = {
 		} else {
 			console.log('can Spawning new creep');
 		}
-		roleBuilder.born(5);
-		roleUpgrader.born(1);
-		roleHarvester.born(2);
+		taskBuild.born(5);
+		taskUpgrad.born(1);
+		taskHarvest.born(2);
 	}
 }
