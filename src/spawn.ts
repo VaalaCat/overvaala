@@ -1,6 +1,6 @@
 import { taskBuild } from "task.build";
 import { taskHarvest } from "task.harvest";
-import { taskUpgrad } from "task.upgrad";
+import { taskUpgrade } from "task.upgrade";
 
 export const spawner = {
 	run: (name: string) => {
@@ -18,7 +18,7 @@ export const spawner = {
 			console.log('can Spawning new creep');
 		}
 		taskBuild.born(5);
-		taskUpgrad.born(1);
+		taskUpgrade.born(1);
 		taskHarvest.born(2);
 	}
 }

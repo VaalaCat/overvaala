@@ -7,18 +7,27 @@ export const creepFather = {
 		var newName = role + Game.time;
 		switch (role) {
 			case ROLE_HAVESTER:
-				spawn.spawnCreep([WORK, WORK, CARRY, MOVE], newName, {
-					memory: {role: ROLE_HAVESTER, room: spawn.room.name, working: false, building: false, upgrading: false}
+				spawn.spawnCreep([WORK, WORK, CARRY, CARRY, MOVE], newName, {
+					memory: {
+						role: ROLE_HAVESTER,
+						room: spawn.room.name, working: false, building: false, upgrading: false, sourceIdx: 1
+					}
 				});
 				break;
 			case ROLE_UPGRADER:
-				spawn.spawnCreep([WORK, CARRY, CARRY, MOVE], newName, {
-					memory: {role: ROLE_UPGRADER, room: spawn.room.name, working: false, building: false, upgrading: false}
+				spawn.spawnCreep([WORK, CARRY, CARRY, CARRY, MOVE], newName, {
+					memory: {
+						role: ROLE_UPGRADER,
+						room: spawn.room.name, working: false, building: false, upgrading: false, sourceIdx: 1
+					}
 				});
 				break;
 			case ROLE_BUILDER:
-				spawn.spawnCreep([WORK, CARRY, CARRY, MOVE], newName, {
-					memory: { role: ROLE_BUILDER, room: spawn.room.name, working: false, building: false, upgrading: false }
+				spawn.spawnCreep([WORK, CARRY, CARRY, CARRY, MOVE], newName, {
+					memory: {
+						role: ROLE_BUILDER,
+						room: spawn.room.name, working: false, building: false, upgrading: false, sourceIdx: 0
+					}
 				});
 				break;
 			default:

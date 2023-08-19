@@ -1,12 +1,13 @@
 import { ROLE_UPGRADER, creepFather } from "creepfather";
 
-export const taskUpgrad = {
-	run: function (creep: Creep, sourceIdx: number) {
+export const taskUpgrade = {
+	name: 'upgrade',
+	run: function (creep: Creep):boolean {
 		if (creep.room.find(FIND_FLAGS).length > 0) {
 			let fs = creep.room.find(FIND_FLAGS);
 			let targetFlag = fs.filter((f) => f.name.startsWith(ROLE_UPGRADER))[0];
 			creep.moveTo(targetFlag);
-			return;
+			return true;
 		}
 
 		if (creep.memory.upgrading && creep.store[RESOURCE_ENERGY] == 0) {
@@ -17,18 +18,19 @@ export const taskUpgrad = {
 			creep.memory.upgrading = true;
 			creep.say('⚡ upgrade');
 		}
+		let sourceIdx = creep.memory.sourceIdx || 1;
 
 		if (creep.memory.upgrading) {
 			if (creep.upgradeController(creep.room.controller as StructureController) == ERR_NOT_IN_RANGE) {
 				creep.moveTo(creep.room.controller as StructureController, { visualizePathStyle: { stroke: '#ffffff' } });
 			}
-		}
-		else {
+		} else {
 			var sources = creep.room.find(FIND_SOURCES);
 			if (creep.harvest(sources[sourceIdx]) == ERR_NOT_IN_RANGE) {
 				creep.moveTo(sources[sourceIdx], { visualizePathStyle: { stroke: '#ffaa00' } });
 			}
 		}
+		return true;
 	},
 	born: function (creepLimit: number) {
 		let numOfUpgrader = Object.keys(Game.creeps)
