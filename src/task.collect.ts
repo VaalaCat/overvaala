@@ -3,7 +3,7 @@ export const taskCollect = {
 	run: function (creep: Creep): boolean {
 		// if there is no energy dropped
 		let droppedEnergy = creep.room.find(FIND_DROPPED_RESOURCES);
-		if (droppedEnergy.length == 0) {
+		if (droppedEnergy.length == 0 || creep.store.getFreeCapacity() == 0) {
 			return false
 		}
 
