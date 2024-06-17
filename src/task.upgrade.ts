@@ -1,4 +1,5 @@
-import { ROLE_UPGRADER, creepFather } from "creepfather";
+import { ROLE_UPGRADER } from "creepfather";
+import { updateSourceIdx } from "helper";
 
 export const taskUpgrade = {
 	name: 'upgrade',
@@ -21,22 +22,15 @@ export const taskUpgrade = {
 		let sourceIdx = creep.memory.sourceIdx;
 
 		if (creep.memory.upgrading) {
-			if (creep.upgradeController(creep.room.controller as StructureController) == ERR_NOT_IN_RANGE) {
-				creep.moveTo(creep.room.controller as StructureController, { visualizePathStyle: { stroke: '#ffffff' } });
-			}
+			creep.upgradeController(creep.room.controller as StructureController)
+			creep.moveTo(creep.room.controller as StructureController, { visualizePathStyle: { stroke: '#ffffff' } });
 		} else {
 			var sources = creep.room.find(FIND_SOURCES);
 			if (creep.harvest(sources[sourceIdx]) == ERR_NOT_IN_RANGE) {
-				creep.moveTo(sources[sourceIdx], { visualizePathStyle: { stroke: '#ffaa00' } });
+				updateSourceIdx(creep, sources);
 			}
+			creep.moveTo(sources[sourceIdx], { visualizePathStyle: { stroke: '#ffaa00' } });
 		}
 		return true;
 	},
-	born: function (creepLimit: number) {
-		let numOfUpgrader = Object.keys(Game.creeps)
-			.filter((name) => name.startsWith(ROLE_UPGRADER)).length;
-		if (numOfUpgrader < creepLimit) {
-			creepFather.born(Game.spawns['Spawn1'], ROLE_UPGRADER);
-		}
-	}
 };

@@ -44,11 +44,7 @@ export const roleMiscerTaskList: TaskNode = {
 		next: {
 			name: taskRepair.name,
 			exec: taskRepair.run,
-			next: {
-				name: taskUpgrade.name,
-				exec: taskUpgrade.run,
-				next: null,
-			},
+			next: roleBuilderTaskList
 		},
 	},
 }

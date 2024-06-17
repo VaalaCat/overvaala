@@ -1,10 +1,22 @@
-import { ROLE_MISCER, creepFather } from "creepfather";
-import { taskBuild } from "task.build";
-import { taskHarvest } from "task.harvest";
-import { taskUpgrade } from "task.upgrade";
+import {
+	CreepRoleType,
+	ROLE_BUILDER,
+	ROLE_HAVESTER,
+	ROLE_MISCER,
+	ROLE_UPGRADER,
+	creepFather,
+} from "creepfather";
+
+const bornCreepSchedule = [
+	{role: ROLE_HAVESTER, limit: 2},
+	{role: ROLE_UPGRADER, limit: 1},
+	{role: ROLE_MISCER, limit: 2},
+	{role: ROLE_BUILDER, limit: 1},
+]
 
 export const spawner = {
 	run: (name: string) => {
+		console.log('spawn ' + name + ' running');
 		if (Game.spawns[name].spawning != null) {
 			const spawningCreep = Game.creeps[(Game.spawns[name].spawning as Spawning).name];
 			Game.spawns[name].room.visual.text(
@@ -18,17 +30,25 @@ export const spawner = {
 		} else {
 			console.log('can Spawning new creep');
 		}
-		taskBuild.born(2);
-		taskUpgrade.born(1);
-		taskHarvest.born(2);
-		bornCreepLimit(2, ROLE_MISCER);
+
+		bornCreepScheduler()
 	}
 }
 
-const bornCreepLimit = function (creepLimit: number, role: string) {
-	let numOfUpgrader = Object.keys(Game.creeps)
+const bornCreepLimit = function (creepLimit: number, role: string): boolean {
+	let numOfCreepType = Object.keys(Game.creeps)
 		.filter((name) => name.startsWith(role)).length;
-	if (numOfUpgrader < creepLimit) {
+	if (numOfCreepType < creepLimit) {
 		creepFather.born(Game.spawns['Spawn1'], role);
+		return true
+	}
+	return false
+}
+
+const bornCreepScheduler = function () {
+	for (const item of bornCreepSchedule) {
+		if (bornCreepLimit(item.limit, item.role)){
+			return
+		}
 	}
 }

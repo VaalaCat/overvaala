@@ -1,4 +1,5 @@
-import { ROLE_HAVESTER, creepFather } from "creepfather";
+import { ROLE_HAVESTER } from "creepfather";
+import { getRandomItem, haveEmptyPositionsAroundSource, updateSourceIdx } from "helper";
 
 export const taskHarvest = {
 	name: 'harvest',
@@ -23,30 +24,27 @@ export const taskHarvest = {
 			}
 		});
 
-		if (creep.room.find(FIND_SOURCES).length == 0 || targets.length == 0) {
+		let sources = creep.room.find(FIND_SOURCES);
+
+		if (sources.length == 0 || targets.length == 0) {
 			return false;
 		}
 
-		let sourceIdx = creep.memory.sourceIdx
+		let sourceIdx = creep.memory.sourceIdx;
 		if (creep.store.getFreeCapacity() > 0) {
-			var sources = creep.room.find(FIND_SOURCES);
 			if (creep.harvest(sources[sourceIdx]) == ERR_NOT_IN_RANGE) {
 				creep.moveTo(sources[sourceIdx], { visualizePathStyle: { stroke: '#ffaa00' } });
+				updateSourceIdx(creep, sources);
 			}
 		} else {
 			if (targets.length > 0) {
 				if (creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 					creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffffff' } });
+					updateSourceIdx(creep, sources);
 				}
 			}
 		}
 		return true;
 	},
-	born: function (creepLimit: number) {
-		let numOfUpgrader = Object.keys(Game.creeps)
-			.filter((name) => name.startsWith(ROLE_HAVESTER)).length;
-		if (numOfUpgrader < creepLimit) {
-			creepFather.born(Game.spawns['Spawn1'], ROLE_HAVESTER);
-		}
-	}
 };
+
