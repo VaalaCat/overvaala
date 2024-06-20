@@ -2,17 +2,26 @@ export const taskCollect = {
 	name: 'collect',
 	run: function (creep: Creep): boolean {
 		// if there is no energy dropped
-		let droppedEnergy = creep.room.find(FIND_DROPPED_RESOURCES);
-		if (droppedEnergy.length == 0 || creep.store.getFreeCapacity() == 0) {
+		let droppedEnergy = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
+			filter: (resource) => {
+				return resource.amount > 0
+			}
+		});
+		if (!droppedEnergy || creep.store.getFreeCapacity() == 0) {
 			return false
 		}
 
-		if (droppedEnergy[0]) {
-			if (creep.pickup(droppedEnergy[0]) == ERR_NOT_IN_RANGE) {
-				creep.moveTo(droppedEnergy[0], { visualizePathStyle: { stroke: '#ffaa00' } });
+		if (droppedEnergy.amount / creep.pos.getRangeTo(droppedEnergy) < 1) {
+			return false
+		}
+
+		if (droppedEnergy) {
+			if (creep.pickup(droppedEnergy) == ERR_NOT_IN_RANGE) {
+				creep.moveTo(droppedEnergy, { visualizePathStyle: { stroke: '#ffaa00' } });
 			}
 			return true;
 		}
+
 
 		const target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
 			filter: (structure) => {

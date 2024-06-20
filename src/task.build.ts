@@ -1,5 +1,5 @@
 import { ROLE_BUILDER } from "creepfather";
-import { haveEmptyPositionsAroundSource, updateSourceIdx } from "helper";
+import { taskWithdraw } from "task.withdraw";
 
 export const taskBuild = {
 	name: 'build',
@@ -16,8 +16,6 @@ export const taskBuild = {
 			return false;
 		}
 
-		let sourceIdx = creep.memory.sourceIdx;
-
 		if (creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {
 			creep.memory.building = false;
 			creep.say('🔄 harvest');
@@ -28,17 +26,13 @@ export const taskBuild = {
 		}
 
 		if (creep.memory.building) {
-			var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
-			if (targets.length) {
-				creep.build(targets[0])
-				creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffffff' } });
+			var target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+			if (target) {
+				creep.build(target)
+				creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
 			}
 		} else {
-			var sources = creep.room.find(FIND_SOURCES);
-			if (creep.harvest(sources[sourceIdx]) == ERR_NOT_IN_RANGE) {
-				updateSourceIdx(creep, sources);
-			}
-			creep.moveTo(sources[sourceIdx], { visualizePathStyle: { stroke: '#ffaa00' } });
+			return taskWithdraw.run(creep);
 		}
 		return true;
 	},

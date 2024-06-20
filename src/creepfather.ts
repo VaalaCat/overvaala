@@ -3,19 +3,31 @@ export const ROLE_UPGRADER = 'upgrader';
 export const ROLE_BUILDER = 'builder';
 export const ROLE_COLLECTOR = 'collector';
 export const ROLE_MISCER = 'miscer';
+export const ROLE_MOVER = 'mover';
+export const ROLE_ATTACKER = 'attacker';
 
-export type CreepRoleType = typeof ROLE_HAVESTER | typeof ROLE_UPGRADER | typeof ROLE_BUILDER | typeof ROLE_COLLECTOR | typeof ROLE_MISCER
+export type CreepRoleType = typeof ROLE_HAVESTER
+| typeof ROLE_UPGRADER | typeof ROLE_BUILDER
+| typeof ROLE_COLLECTOR | typeof ROLE_MISCER
+| typeof ROLE_MOVER | typeof ROLE_ATTACKER
 
-const RoleBodyParts = {
-	[ROLE_HAVESTER]: [WORK, CARRY, CARRY, CARRY, MOVE, MOVE],
-	[ROLE_UPGRADER]: [WORK, CARRY, CARRY, CARRY, MOVE, MOVE],
-	[ROLE_BUILDER]: [WORK, WORK, CARRY, CARRY, MOVE, MOVE],
-	[ROLE_MISCER]: [WORK, CARRY, CARRY, MOVE, MOVE, MOVE]
+export const RoleBodyParts = {
+	[ROLE_HAVESTER]: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
+	[ROLE_UPGRADER]: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
+	[ROLE_BUILDER]: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
+	[ROLE_MISCER]: [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+	[ROLE_MOVER]: [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+	[ROLE_ATTACKER]: [ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
 }
 
 const reduceCreepCost = function (parts: BodyPartConstant[], maxCost: number): BodyPartConstant[] {
 	let totalCost = 0;
 	let trueCost = 0;
+	let originCost = _.sum(parts.map(part => BODYPART_COST[part]));
+	if (originCost <= maxCost) {
+		return parts;
+	}
+
 	const result: BodyPartConstant[] = [];
 	const partCounts: { [key in BodyPartConstant]?: number } = {};
 	for (const part of parts) {
@@ -39,18 +51,18 @@ const reduceCreepCost = function (parts: BodyPartConstant[], maxCost: number): B
 		}
 	}
 
-	console.log("Reduced creep cost to: " + totalCost + ", parts: " + result);
+	console.log("Reduced creep cost to: " + trueCost + ", parts: " + result);
 
 	return result;
 };
 
 export const creepFather = {
-	born: function (spawn: StructureSpawn, role: string) {
+	born: function (spawn: StructureSpawn, role: string, bodyParts: BodyPartConstant[]) {
 		var newName = role + Game.time;
 		let source = Math.round(Math.random());
 
-		spawn.spawnCreep(reduceCreepCost(RoleBodyParts[role as keyof typeof RoleBodyParts],
-			spawn.room.energyCapacityAvailable),
+		spawn.spawnCreep(reduceCreepCost(bodyParts,
+			spawn.room.energyAvailable),
 			newName,
 			{
 				memory: {
@@ -59,6 +71,8 @@ export const creepFather = {
 					working: false,
 					building: false,
 					upgrading: false,
+					harvesting: false,
+					transfering: false,
 					sourceIdx: source
 				}
 			});

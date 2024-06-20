@@ -1,5 +1,5 @@
 import { ROLE_UPGRADER } from "creepfather";
-import { updateSourceIdx } from "helper";
+import { taskWithdraw } from "task.withdraw";
 
 export const taskUpgrade = {
 	name: 'upgrade',
@@ -19,17 +19,12 @@ export const taskUpgrade = {
 			creep.memory.upgrading = true;
 			creep.say('⚡ upgrade');
 		}
-		let sourceIdx = creep.memory.sourceIdx;
 
 		if (creep.memory.upgrading) {
 			creep.upgradeController(creep.room.controller as StructureController)
 			creep.moveTo(creep.room.controller as StructureController, { visualizePathStyle: { stroke: '#ffffff' } });
 		} else {
-			var sources = creep.room.find(FIND_SOURCES);
-			if (creep.harvest(sources[sourceIdx]) == ERR_NOT_IN_RANGE) {
-				updateSourceIdx(creep, sources);
-			}
-			creep.moveTo(sources[sourceIdx], { visualizePathStyle: { stroke: '#ffaa00' } });
+			return taskWithdraw.run(creep)
 		}
 		return true;
 	},

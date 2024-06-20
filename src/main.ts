@@ -20,6 +20,8 @@ declare global {
     role: string;
     room: string;
     sourceIdx: number;
+    harvesting: boolean;
+    transfering: boolean;
     working: boolean;
     building: boolean;
     upgrading: boolean;
