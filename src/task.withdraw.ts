@@ -6,7 +6,7 @@ export const taskWithdraw = {
 			filter: (structure) => { return (structure.structureType == STRUCTURE_CONTAINER ||
 					structure.structureType == STRUCTURE_STORAGE ||
 					structure.structureType == STRUCTURE_TERMINAL
-				) && structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0; }
+				) && structure.store.getUsedCapacity(RESOURCE_ENERGY) >= 50; }
 		});
 
 		if (!target || creep.store.getFreeCapacity() == 0) {

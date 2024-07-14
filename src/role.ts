@@ -7,9 +7,25 @@ import { taskMourn } from "task.mourn";
 import { taskRangeCollect } from "task.range.collect";
 import { taskRepair } from "task.repair";
 import { taskStash } from "task.stash";
+import { taskToFlag } from "task.toflag";
 import { taskTransfer } from "task.transfer";
 import { taskUpgrade } from "task.upgrade";
-import { taskWithdraw } from "task.withdraw";
+
+export const roleUpgraderTaskList: TaskNode = {
+	name: taskUpgrade.name,
+	exec: taskUpgrade.run,
+	next: {
+		name: taskHarvest.name,
+		exec: taskHarvest.run,
+		next: null,
+	},
+}
+
+export const roleTransferrerTaskList: TaskNode = {
+	name: taskTransfer.name,
+	exec: taskTransfer.run,
+	next: roleUpgraderTaskList,
+}
 
 export const roleBuilderTaskList: TaskNode = {
 	name: taskRangeCollect.name,
@@ -17,23 +33,10 @@ export const roleBuilderTaskList: TaskNode = {
 	next: {
 		name: taskBuild.name,
 		exec: taskBuild.run,
-		next: {
-			name: taskHarvest.name,
-			exec: taskHarvest.run,
-			next: {
-				name: taskUpgrade.name,
-				exec: taskUpgrade.run,
-				next: null,
-			},
-		}
+		next: roleTransferrerTaskList
 	}
 }
 
-export const roleUpgraderTaskList: TaskNode = {
-	name: taskUpgrade.name,
-	exec: taskUpgrade.run,
-	next: null,
-}
 
 export const roleHarvesterTaskList: TaskNode = {
 	name: taskHarvest.name,
@@ -44,20 +47,10 @@ export const roleHarvesterTaskList: TaskNode = {
 export const roleMinerTaskList: TaskNode = {
 	name: taskMine.name,
 	exec: taskMine.run,
-	next:{
+	next: {
 		name: taskStash.name,
 		exec: taskStash.run,
 		next: null
-	}
-}
-
-export const roleTransferrerTaskList: TaskNode = {
-	name: taskTransfer.name,
-	exec: taskTransfer.run,
-	next: {
-		name: taskUpgrade.name,
-		exec: taskUpgrade.run,
-		next: null,
 	}
 }
 
@@ -78,7 +71,11 @@ export const roleMiscerTaskList: TaskNode = {
 export const roleAttackerTaskList: TaskNode = {
 	name: taskAttack.name,
 	exec: taskAttack.run,
-	next: null
+	next: {
+		name: taskToFlag.name,
+		exec: taskToFlag.run,
+		next: null
+	}
 }
 
 export const role = {

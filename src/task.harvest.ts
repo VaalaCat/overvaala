@@ -8,7 +8,7 @@ export const taskHarvest = {
 		if (creep.room.find(FIND_FLAGS).length > 0) {
 			let fs = creep.room.find(FIND_FLAGS);
 			let targetFlag = fs.filter((f) => f.name.startsWith(ROLE_HAVESTER))[0];
-			if (targetFlag == null) {
+			if (targetFlag) {
 				creep.moveTo(targetFlag);
 				return true;
 			}
@@ -35,7 +35,8 @@ export const taskHarvest = {
 
 		let sources = creep.room.find(FIND_SOURCES);
 
-		if (sources.length == 0 || !target) {
+		// if (sources.length == 0 || !target) {
+		if (sources.length == 0) {
 			return false;
 		}
 

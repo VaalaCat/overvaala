@@ -4,10 +4,10 @@ export const taskCollect = {
 		// if there is no energy dropped
 		let droppedEnergy = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
 			filter: (resource) => {
-				return resource.amount > 0
+				return resource.resourceType == RESOURCE_ENERGY && resource.amount > 0
 			}
 		});
-		if (!droppedEnergy || creep.store.getFreeCapacity() == 0) {
+		if (!droppedEnergy || creep.store.getCapacity() - creep.store.getFreeCapacity() > 50) {
 			return false
 		}
 

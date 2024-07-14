@@ -7,7 +7,7 @@ export const taskMine = {
 		if (creep.room.find(FIND_FLAGS).length > 0) {
 			let fs = creep.room.find(FIND_FLAGS);
 			let targetFlag = fs.filter((f) => f.name.startsWith(ROLE_HAVESTER))[0];
-			if (targetFlag == null) {
+			if (targetFlag) {
 				creep.moveTo(targetFlag);
 				return true;
 			}

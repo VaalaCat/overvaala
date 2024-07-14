@@ -1,12 +1,22 @@
+import { ROLE_MISCER } from "creepfather";
+
 export const taskMourn = {
 	name: 'mourn',
 	run: function (creep: Creep): boolean {
+		let fs = creep.room.find(FIND_FLAGS);
+		if (fs.length > 0) {
+			let targetFlag = fs.filter((f) => f.name.startsWith(ROLE_MISCER))[0];
+			if (targetFlag) {
+				creep.moveTo(targetFlag,{ visualizePathStyle: { stroke: '#ffffaa' } });
+				return true;
+			}
+		}
 
 		// find tombstone and collect its energy
 		const target = creep.pos.findClosestByPath(FIND_TOMBSTONES, {
 			filter: (tombstone) => { return tombstone.store.getUsedCapacity(RESOURCE_ENERGY) > 0; }
 		});
-		if (!target || creep.store.getFreeCapacity() == 0) {
+		if (!target || creep.store.getCapacity() - creep.store.getFreeCapacity() > 50) {
 			return false;
 		}
 		if (creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {

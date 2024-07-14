@@ -4,13 +4,6 @@ import { taskWithdraw } from "task.withdraw";
 export const taskBuild = {
 	name: 'build',
 	run: function (creep: Creep): boolean {
-		if (creep.room.find(FIND_FLAGS).length > 0) {
-			let fs = creep.room.find(FIND_FLAGS);
-			let targetFlag = fs.filter((f) => f.name.startsWith(ROLE_BUILDER))[0];
-			creep.moveTo(targetFlag);
-			return false;
-		}
-
 		// if cannot build, return false
 		if (creep.room.find(FIND_CONSTRUCTION_SITES).length == 0) {
 			return false;

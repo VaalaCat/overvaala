@@ -18,5 +18,5 @@ export const handler = () => {
 	// console.log(`1 - ok: ${haveEmptyPositionsAroundSource(resources[0])}, pos: ${resources[0].pos}`);
 	// console.log(`2 - ok: ${haveEmptyPositionsAroundSource(resources[1])}, pos: ${resources[1].pos}`);
 	spawner.run('Spawn1');
-	// towersRun();
+	towersRun();
 }

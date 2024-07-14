@@ -27,6 +27,10 @@ export const taskTransfer = {
             }
         });
 
+        if (p1target && !p0target && !sourceTarget) {
+            return false;
+        }
+
         let aroundTarget = creep.pos.findInRange(FIND_STRUCTURES, 1, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_EXTENSION ||

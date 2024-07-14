@@ -23,12 +23,14 @@ const bornCreepSchedule: CreepSchedule[] = [
 		role: ROLE_ATTACKER,
 		limit: 2,
 		bodyGenerator: () => { if (getTypeOfCreeps(ROLE_ATTACKER).length == 0) { return [ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE] } return RoleBodyParts[ROLE_ATTACKER] },
-		condition: (spawnName: string): boolean => { return Game.spawns[spawnName].room.find(FIND_HOSTILE_CREEPS).length > 0 }
+		condition: (spawnName: string): boolean => {
+			return Game.spawns[spawnName].room.find(FIND_HOSTILE_CREEPS).length > 0
+		}
 	},
 	{ role: ROLE_HAVESTER, limit: 2, bodyGenerator: () => RoleBodyParts[ROLE_HAVESTER] },
 	{ role: ROLE_UPGRADER, limit: 1, bodyGenerator: () => RoleBodyParts[ROLE_UPGRADER] },
-	{ role: ROLE_MISCER, limit: 1, bodyGenerator: () => RoleBodyParts[ROLE_MISCER] },
-	{ role: ROLE_BUILDER, limit: 1, bodyGenerator: () => RoleBodyParts[ROLE_BUILDER] },
+	{ role: ROLE_MISCER, limit: 2, bodyGenerator: () => RoleBodyParts[ROLE_MISCER] },
+	{ role: ROLE_BUILDER, limit: 2, bodyGenerator: () => RoleBodyParts[ROLE_BUILDER] },
 	{ role: ROLE_MOVER, limit: 2, bodyGenerator: () => RoleBodyParts[ROLE_MOVER] },
 ]
 
@@ -56,7 +58,9 @@ export const spawner = {
 }
 
 const bornCreepLimit = function (spawnName: string, creepLimit: number, role: string, bodyParts: BodyPartConstant[]): boolean {
-	let numOfCreepType = Object.keys(Game.creeps)
+	let numOfCreepType = Object.keys(Game.creeps).filter((name) => {
+		return Game.creeps[name].room == Game.spawns[spawnName].room
+	})
 		.filter((name) => name.startsWith(role)).length;
 	if (numOfCreepType < creepLimit) {
 		creepFather.born(Game.spawns[spawnName], role, bodyParts);

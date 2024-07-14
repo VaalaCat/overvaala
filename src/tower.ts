@@ -3,16 +3,30 @@ export const tower = {
         if (structure.store.getUsedCapacity(RESOURCE_ENERGY) == 0) {
             return false;
         }
-        let enemies = structure.pos.findClosestByPath(FIND_HOSTILE_CREEPS, {
+        let enemieWithAttack = structure.pos.findClosestByPath(FIND_HOSTILE_CREEPS, {
             filter: (creep) => {
-                return creep.owner.username != structure.owner.username;
+                return creep.getActiveBodyparts(ATTACK) > 0;
             }
         });
-        if (!enemies) {
+
+        let enemieWithHeal = structure.pos.findClosestByPath(FIND_HOSTILE_CREEPS, {
+            filter: (creep) => {
+                return creep.getActiveBodyparts(HEAL) > 0;
+            }
+        });
+        let enemie = enemieWithHeal || enemieWithAttack;
+
+        let closestHostile = structure.pos.findClosestByPath(FIND_HOSTILE_CREEPS);
+
+        if (closestHostile) {
+            enemie = closestHostile;
+        }
+
+        if (!enemie) {
             return false;
         }
-        console.log(`attack ${enemies} enemies`);
-        structure.attack(enemies);
+
+        structure.attack(enemie);
         return true
     }
 }

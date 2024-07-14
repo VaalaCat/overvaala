@@ -3,12 +3,14 @@ import { taskWithdraw } from "task.withdraw";
 
 export const taskUpgrade = {
 	name: 'upgrade',
-	run: function (creep: Creep):boolean {
+	run: function (creep: Creep): boolean {
 		if (creep.room.find(FIND_FLAGS).length > 0) {
 			let fs = creep.room.find(FIND_FLAGS);
 			let targetFlag = fs.filter((f) => f.name.startsWith(ROLE_UPGRADER))[0];
-			creep.moveTo(targetFlag);
-			return true;
+			if (targetFlag) {
+				creep.moveTo(targetFlag);
+				return true;
+			}
 		}
 
 		if (creep.memory.upgrading && creep.store[RESOURCE_ENERGY] == 0) {
