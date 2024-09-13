@@ -5,10 +5,9 @@ export const taskTransfer = {
 
         let p0target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: (structure) => {
-                return (structure.structureType == STRUCTURE_EXTENSION ||
-                    structure.structureType == STRUCTURE_SPAWN ||
-                    structure.structureType == STRUCTURE_TOWER) &&
-                    structure.store.getFreeCapacity(resourceType) > 0;
+                return (
+                    (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) && structure.store.getFreeCapacity(resourceType) > 0 )
+                    || (structure.structureType == STRUCTURE_TOWER && structure.store.getFreeCapacity(resourceType) > 100)
             }
         });
 
@@ -16,14 +15,14 @@ export const taskTransfer = {
             filter: (structure) => {
                 return (
                     structure.structureType == STRUCTURE_STORAGE) &&
-                    structure.store.getFreeCapacity(resourceType) > 0;
+                    structure.store.getFreeCapacity(resourceType) > 1000;
             }
         });
 
         let sourceTarget = creep.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: (structure) => {
                 return structure.structureType == STRUCTURE_CONTAINER &&
-                    structure.store.getUsedCapacity(resourceType) > 150;
+                    structure.store.getUsedCapacity(resourceType) > 200;
             }
         });
 

@@ -42,15 +42,14 @@ export const taskMine = {
 			return false
 		}
 
+		creep.moveTo(minePos, { visualizePathStyle: { stroke: '#ffaa00' } });
 		const code = creep.harvest(sources[sourceIdx])
 		if (code == OK) {
 			return true
 		}
 		if (code == ERR_NOT_IN_RANGE) {
-			creep.moveTo(minePos, { visualizePathStyle: { stroke: '#ffaa00' } });
 			return true;
 		}
-
 		return true;
 	}
 };

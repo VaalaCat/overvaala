@@ -1,32 +1,56 @@
 export const tower = {
-    run: function (structure: StructureTower): boolean {
-        if (structure.store.getUsedCapacity(RESOURCE_ENERGY) == 0) {
+    run: function (tower: StructureTower): boolean {
+        if (tower.store.getUsedCapacity(RESOURCE_ENERGY) == 0) {
             return false;
         }
-        let enemieWithAttack = structure.pos.findClosestByPath(FIND_HOSTILE_CREEPS, {
+        let enemieWithAttack = tower.pos.findClosestByPath(FIND_HOSTILE_CREEPS, {
             filter: (creep) => {
                 return creep.getActiveBodyparts(ATTACK) > 0;
             }
         });
 
-        let enemieWithHeal = structure.pos.findClosestByPath(FIND_HOSTILE_CREEPS, {
+        let enemieWithHeal = tower.pos.findClosestByPath(FIND_HOSTILE_CREEPS, {
             filter: (creep) => {
                 return creep.getActiveBodyparts(HEAL) > 0;
             }
         });
         let enemie = enemieWithHeal || enemieWithAttack;
 
-        let closestHostile = structure.pos.findClosestByPath(FIND_HOSTILE_CREEPS);
+        let closestHostile = tower.pos.findClosestByPath(FIND_HOSTILE_CREEPS);
 
-        if (closestHostile) {
+        if (closestHostile && !enemie) {
             enemie = closestHostile;
         }
 
         if (!enemie) {
-            return false;
-        }
+            let p0Walls = tower.pos.findClosestByPath(FIND_STRUCTURES, {
+              filter: wall => {
+                return (
+                  wall.structureType == STRUCTURE_WALL &&
+                  wall.room.name == tower.room.name &&
+                  wall.hits < Math.ceil(wall.hitsMax / 1000)
+                );
+              }
+            });
+            // let p1Walls = tower.pos.findClosestByPath(FIND_STRUCTURES, {
+            //   filter: wall => {
+            //     return (
+            //       wall.structureType == STRUCTURE_WALL &&
+            //       wall.room.name == tower.room.name &&
+            //       wall.hits < Math.ceil(wall.hitsMax / 500)
+            //     );
+            //   }
+            // });
+            let p1Walls = undefined;
+            let walls = p0Walls ? p0Walls : p1Walls;
+            if (walls && tower.store.getUsedCapacity(RESOURCE_ENERGY) > tower.store.getCapacity(RESOURCE_ENERGY) * 0.5) {
+              console.log(`repair ${walls} walls`);
+              tower.repair(walls);
+            }
+            return true;
+          }
 
-        structure.attack(enemie);
+        tower.attack(enemie);
         return true
     }
 }
